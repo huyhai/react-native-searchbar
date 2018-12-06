@@ -9,7 +9,7 @@ import {
   Animated
 } from 'react-native';
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+// import Icon from 'react-native-vector-icons/MaterialIcons';
 import { filter, some, includes } from 'lodash/collection';
 import { debounce } from 'lodash/function';
 
@@ -66,7 +66,7 @@ export default class Search extends Component {
     backButtonAccessibilityLabel: 'Navigate up',
     closeButtonAccessibilityLabel: 'Clear search text',
     heightAdjust: 0,
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     iconColor: 'gray',
     textColor: 'gray',
     selectionColor: 'lightskyblue',
@@ -253,108 +253,88 @@ export default class Search extends Component {
     } = this.props;
     return (
       <Animated.View
-        style={[
-          styles.container,
-          {
-            transform: [
-              {
-                translateY: this.state.top
-              }
-            ],
-            shadowOpacity: iOSHideShadow ? 0 : 0.7
-          }
-        ]}>
-        {this.state.show && (
-          <View style={[styles.navWrapper, { backgroundColor }]}>
-            {Platform.OS === 'ios' &&
-              iOSPadding && <View style={{ height: 20, backgroundColor: iOSPaddingBackgroundColor }} />}
-            <View
-              style={[
-                styles.nav,
-                { height: (Platform.OS === 'ios' ? 52 : 62) + heightAdjust }
-              ]}>
-              {!hideBack && (
-                <TouchableOpacity
-                  accessible={true}
-                  accessibilityComponentType="button"
-                  accessibilityLabel={backButtonAccessibilityLabel}
-                  onPress={onBack || this.hide}>
-                  {backButton ? (
-                    <View
-                      style={{ width: backCloseSize, height: backCloseSize }}>
-                      {backButton}
-                    </View>
-                  ) : (
-                    <Icon
-                      name="arrow-back"
-                      size={backCloseSize}
-                      style={{
-                        color: iconColor,
-                        padding: heightAdjust / 2 + 10
-                      }}
-                    />
-                  )}
-                </TouchableOpacity>
-              )}
-              <TextInput
-                ref={ref => (this.textInput = ref)}
-                onLayout={() => focusOnLayout && this.textInput.focus()}
-                style={[
-                  styles.input,
-                  {
-                    fontSize: fontSize,
-                    color: textColor,
-                    fontFamily: fontFamily,
-                    marginLeft: hideBack ? 30 : 0,
-                    marginTop: Platform.OS === 'ios' ? heightAdjust / 2 + 10 : 0
-                  }
-                ]}
-                selectionColor={selectionColor}
-                onChangeText={input => this._onChangeText(input)}
-                onSubmitEditing={() =>
-                  onSubmitEditing ? onSubmitEditing() : null}
-                onFocus={() => (onFocus ? onFocus() : null)}
-                onBlur={this._handleBlur}
-                placeholder={placeholder}
-                placeholderTextColor={placeholderTextColor}
-                value={this.state.input}
-                underlineColorAndroid="transparent"
-                returnKeyType="search"
-                autoCorrect={autoCorrect}
-                autoCapitalize={autoCapitalize}
-                keyboardAppearance={keyboardAppearance}
-                editable={editable}
-              />
-              <TouchableOpacity
-                accessible={true}
-                accessibilityComponentType="button"
-                accessibilityLabel={closeButtonAccessibilityLabel}
-                onPress={
-                  hideX || this.state.input === '' ? null : this._handleX
-                }>
-                {closeButton ? (
-                  <View style={{ width: backCloseSize, height: backCloseSize }}>
-                    {closeButton}
-                  </View>
-                ) : (
-                  <Icon
-                    name={'close'}
-                    size={backCloseSize}
-                    style={{
-                      color:
-                        hideX || this.state.input == ''
-                          ? backgroundColor
-                          : iconColor,
-                      padding: heightAdjust / 2 + 10
-                    }}
-                  />
-                )}
-              </TouchableOpacity>
-            </View>
-          </View>
+    style={[
+        styles.container,
+    {
+      transform: [
+        {
+          translateY: this.state.top
+        }
+      ],
+    }
+  ]}>
+    {this.state.show && (
+    <View style={[styles.navWrapper, { backgroundColor }]}>
+    <View
+      style={[
+          styles.nav,
+      { height: this.props.metrics.navBarHeight }
+    ]}>
+      {!hideBack && (
+      <TouchableOpacity
+        accessible={true}
+        accessibilityComponentType="button"
+        accessibilityLabel={backButtonAccessibilityLabel}
+        onPress={onBack || this.hide}>
+        {backButton ? (
+          <View
+          style={{ width: backCloseSize, height: backCloseSize }}>
+          {backButton}
+        </View>
+        ) : (
+          null
         )}
-      </Animated.View>
-    );
+      </TouchableOpacity>
+      )}
+    <TextInput
+      ref={ref => (this.textInput = ref)}
+      onLayout={() => focusOnLayout && this.textInput.focus()}
+      style={[
+          styles.input,
+      {
+        fontSize: fontSize,
+          color: textColor,
+        fontFamily: fontFamily,
+        marginLeft: hideBack ? 30 : 0,
+        marginTop: Platform.OS === 'ios' ? heightAdjust / 2  : 0
+      }
+    ]}
+      selectionColor={selectionColor}
+      onChangeText={input => this._onChangeText(input)}
+      onSubmitEditing={() =>
+      onSubmitEditing ? onSubmitEditing() : null}
+      onFocus={() => (onFocus ? onFocus() : null)}
+      onBlur={this._handleBlur}
+      placeholder={placeholder}
+      placeholderTextColor={placeholderTextColor}
+      value={this.state.input}
+      underlineColorAndroid="transparent"
+      returnKeyType="search"
+      autoCorrect={autoCorrect}
+      autoCapitalize={autoCapitalize}
+      keyboardAppearance={keyboardAppearance}
+      editable={editable}
+      />
+      <TouchableOpacity
+      accessible={true}
+      accessibilityComponentType="button"
+      accessibilityLabel={closeButtonAccessibilityLabel}
+      onPress={
+        hideX || this.state.input === '' ? null : this._handleX
+    }>
+      {closeButton ? (
+        <View style={{ width: backCloseSize, height: backCloseSize }}>
+        {closeButton}
+      </View>
+      ) : (
+        null
+      )}
+    </TouchableOpacity>
+    </View>
+    </View>
+    )}
+  </Animated.View>
+  );
   };
 }
 
@@ -380,13 +360,16 @@ const styles = StyleSheet.create({
     flexBasis: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   input: {
     ...Platform.select({
-      ios: { height: 30 },
-      android: { height: 50 }
+      ios: { height: 38 },
+      android: { height: 38 }
     }),
-    width: Dimensions.get('window').width - 120
+    width: Dimensions.get('window').width - 100,
+    backgroundColor:"white",
+    borderRadius:15,
+    paddingLeft: 7
   }
 });
