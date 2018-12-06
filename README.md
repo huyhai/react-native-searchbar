@@ -150,3 +150,4 @@ Contributing to `react-native-searchbar` is easy! With four simple steps:
 ### Push the change!
 1. `git add -A && git commit -m "My message"` (replacing `My message` with a commit message, such as `Fixed styling on search bar`) to stage and commit your changes
 1. `git push my-fork-name the-name-of-my-branch`
+test
